@@ -1,0 +1,28 @@
+{
+  "name": "vdm-vlc-plugin",
+  "version": "0.1.0",
+  "description": "VDM plugin for VLC singleton control.",
+  "keywords": [
+    "VLC", "VideoLAN Media Player", "MPRIS"
+  ],
+  "author": "Mark Hong",
+  "license": "GPL-3.0",
+
+  "main": "vlc_plugin.py",
+  "capability": [
+    "x11-manager"
+  ],
+  "scripts": {
+    "pre-install": "mkdir release; mv *.py release",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  "homepage": "https://github.com/VDM-Maintainer-Group/vdm-vlc-plugin#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VDM-Maintainer-Group/vdm-vlc-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VDM-Maintainer-Group/vdm-vlc-plugin/issues"
+  }
+}

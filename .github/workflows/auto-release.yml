@@ -1,0 +1,31 @@
+name: auto-release
+
+on:
+  push:
+    branches: [release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: MontyD/package-json-updated-action@1.0.1
+        id: version-updated
+        with:
+          path: package.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: thedoctor0/zip-release@master
+        if: steps.version-updated.outputs.has-updated
+        with:
+          filename: 'vdm-okular-plugin-v${{ steps.version-updated.outputs.current-package-version }}.zip'
+          exclusions: '*.git*'
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        if: steps.version-updated.outputs.has-updated
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "v${{ steps.version-updated.outputs.current-package-version }}"
+          prerelease: false
+          title: "v${{ steps.version-updated.outputs.current-package-version }} (Automatic Release)"
+          files: |
+            vdm-okular-plugin-v${{ steps.version-updated.outputs.current-package-version }}.zip
