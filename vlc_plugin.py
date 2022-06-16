@@ -64,7 +64,7 @@ class VLCPlugin(SRC_API):
             sess.list_names().index('org.mpris.MediaPlayer2.vlc')
         except:
             sp.Popen(['vlc'], start_new_session=True)
-            time.sleep(SLOT)
+            time.sleep(2*SLOT)
 
         ## resume window status
         _pid = dbus_iface.GetConnectionUnixProcessID('org.mpris.MediaPlayer2.vlc')
