@@ -8,6 +8,11 @@ DBG = 1
 SLOT = 0.40
 PROG_NAME = 'vlc'
 
+from pyvdm.core.ApplicationManager import ApplicationManager as AM
+TARGET = 'vlc'
+APP = AM.get_application(TARGET)
+PROG_EXEC = APP['exec'].split()[0]
+
 SET_PLAYBACK = {
     'Stopped': lambda x: x.Stop(),
     'Paused':  lambda x: x.Pause(),
@@ -63,7 +68,7 @@ class VLCPlugin(SRC_API):
         try:
             sess.list_names().index('org.mpris.MediaPlayer2.vlc')
         except:
-            sp.Popen(['vlc'], start_new_session=True)
+            sp.Popen([PROG_EXEC], start_new_session=True)
             time.sleep(2*SLOT)
 
         ## resume window status
@@ -111,7 +116,7 @@ class VLCPlugin(SRC_API):
             pass
         return 0
 
-    def onResume(self, stat_file):
+    def onResume(self, stat_file, new):
         ## load stat file with failure check
         with open(stat_file, 'r') as f:
             _file = f.read().strip()
@@ -123,7 +128,8 @@ class VLCPlugin(SRC_API):
             except:
                 return -1
         ## rearrange windows by title
-        self._resume_status(record)
+        if record:
+            self._resume_status(record)
         return 0
 
     def onClose(self):
